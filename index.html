@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>2024 신년계획 버킷리스트</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <style>
+    .bg {
+      background-image: url("./벚꽃배경.gif");
+      background-image: url("./벚꽃배경1.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-color: #141617;
+    }
+
+    .title {
+      margin-top: 50px;
+      color: #E8344E;
+    }
+
+    .msg {
+      color: white;
+      margin-bottom: 48px;
+    }
+
+    .bucket {
+      width: 160px;
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .img1 {
+      background-image: url("./Bucket01.png");
+      color: white;
+    }
+
+    .img2 {
+      background-image: url("./Bucket02.png");
+      color: #E8344E;
+    }
+
+    .img3 {
+      background-image: url("./Bucket03.png");
+      color: #E8344E;
+    }
+
+    .img4 {
+      background-image: url("./Bucket04.png");
+      color: white;
+    }
+
+    .img5 {
+      background-image: url("./Bucket05.png");
+      color: white;
+    }
+
+    .img6 {
+      background-image: url("./Bucket06.png");
+      color: #E8344E;
+    }
+  </style>
+</head>
+
+<body class="bg">
+    <audio src="bgm.mp3" autoplay loop controls class="myAudio"></audio>
+<div class="center">
+  <h1 class="title">SPARTHON Bucket List</h1>
+  <p class="msg">꿈은 꾸는 것이 아닌, 이루는 것이다.</p>
+
+<div class="container">
+    <input type="text" id="newItem" placeholder="무엇을 해보고 싶나요?">
+    <button id="addItem">+</button>
+</div>
+<ul id="bucketList"></ul>
+  <script>
+    // 페이지 로드 시 이전 상태 복원
+    document.addEventListener("DOMContentLoaded", (event) => {
+      const buckets = document.querySelectorAll(".bucket");
+      buckets.forEach((bucket, index) => {
+        // 로컬 스토리지에서 상태 읽기
+        const isDone = localStorage.getItem("bucket" + index) === "done";
+        if (isDone) {
+          bucket.classList.add("done");
+        }
+      });
+    });
+
+    // 버킷 리스트 클릭 이벤트
+    const buckets = document.querySelectorAll(".bucket");
+    buckets.forEach((bucket, index) => {
+      bucket.addEventListener("click", function () {
+        // 클래스 토글
+        bucket.classList.toggle("done");
+
+        // 로컬 스토리지에 상태 저장
+        if (bucket.classList.contains("done")) {
+          localStorage.setItem("bucket" + index, "done");
+        } else {
+          localStorage.setItem("bucket" + index, "");
+        }
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const addItemButton = document.getElementById('addItem');
+    const newItemInput = document.getElementById('newItem');
+    const bucketList = document.getElementById('bucketList');
+
+    // 사용할 이미지 URL 배열
+    const imageUrls = [
+        'Bucket01.png',
+        'Bucket03.png',
+        'Bucket04.png',
+        'Bucket05.png',
+        'Bucket06.png'
+    ];
+    let imageIndex = 0;
+
+    addItemButton.addEventListener('click', function() {
+        if (bucketList.children.length < imageUrls.length) {
+            const itemText = newItemInput.value.trim();
+            if (itemText) {
+                addItem(itemText, imageUrls[imageIndex]);
+                newItemInput.value = ''; // 입력 필드 초기화
+                imageIndex = (imageIndex + 1) % imageUrls.length;
+            }
+        } else {
+            alert('최대 항목 수에 도달했습니다.');
+        }
+    });
+
+    bucketList.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-btn')) {
+            event.target.parentNode.remove();
+        }
+    });
+
+    function addItem(text, imageUrl) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'bucket-item';
+        itemDiv.style.backgroundImage = `url('${imageUrl}')`; // 배경 이미지 설정
+
+        const textDiv = document.createElement('div');
+        textDiv.textContent = text;
+        itemDiv.appendChild(textDiv);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '삭제';
+        deleteBtn.className = 'delete-btn';
+        itemDiv.appendChild(deleteBtn);
+
+        bucketList.appendChild(itemDiv);
+    }
+});
+  </script>
+
+</body>
+
+</html>
